@@ -28,7 +28,7 @@
 
 - (NSImage *)infoButtonImage {
     static NSImage *image;
-    if (!image) image = [NSImage imageNamed:@"NSRevealFreestandingTemplate"];
+    if (!image) image = [NSImage imageWithSystemSymbolName:@"magnifyingglass.circle.fill" accessibilityDescription:nil];
     return image;
 }
 

@@ -7,10 +7,6 @@
     [self setAlphaValue:1.0];
 }
 
-- (BOOL)allowsVibrancy {
-    return NSAppKitVersionNumber >= NSAppKitVersionNumber10_10;
-}
-
 - (void)setHidden:(BOOL)flag {
     if (!flag) {
         [super setHidden:NO];

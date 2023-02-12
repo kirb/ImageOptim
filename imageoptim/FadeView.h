@@ -3,7 +3,7 @@
 @import Cocoa;
 #import <AppKit/AppKit.h>
 
-@interface FadeView : NSVisualEffectView
+@interface FadeView : NSView
 {
 }
 

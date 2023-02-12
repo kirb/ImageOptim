@@ -88,11 +88,9 @@ static void appendFormatNameIfLossyEnabled(NSUserDefaults *defs, NSString *name,
 }
 
 - (void)initStatusbarWithDefaults:(NSUserDefaults *)defs {
-    [[statusBarLabel cell] setBackgroundStyle:NSBackgroundStyleRaised];
-
     static BOOL overallAvg = NO;
     static NSString *defaultText;
-    defaultText = statusBarLabel.stringValue;
+	defaultText = window.subtitle;
     NSByteCountFormatter *sizeFormatter = [[NSByteCountFormatter alloc] init];
 
     static NSNumberFormatter *percFormatter;
@@ -180,7 +178,8 @@ static void appendFormatNameIfLossyEnabled(NSUserDefaults *defs, NSString *name,
                                                    [arr componentsJoinedByString:@", "]];
               }
           } else if (anyBusyFiles) {
-              str = @"";
+              // Zero width space, so the subtitle doesn’t get collapsed entirely.
+              str = @"\u200b";
           }
 
           // that was also in KVO, but caused deadlocks there. Here it's deferred.
@@ -188,8 +187,7 @@ static void appendFormatNameIfLossyEnabled(NSUserDefaults *defs, NSString *name,
       }
 
       dispatch_async(dispatch_get_main_queue(), ^() {
-          [self->statusBarLabel setStringValue:str];
-          [self->statusBarLabel setSelectable:selectable];
+          self->window.subtitle = str;
       });
       usleep(100000); // 1/10th of a sec to avoid updating statusbar as fast as possible (100% cpu on the statusbar alone is ridiculous)
     });

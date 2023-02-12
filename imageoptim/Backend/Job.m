@@ -311,7 +311,7 @@
     }
     [filePath removeAllCachedResourceValues];
     [self setNewFileInitial:[self.revertFile copyOfPath:filePath]];
-    [self setStatus:@"noopt" order:6 text:NSLocalizedString(@"Reverted to original",@"tooltip")];
+    [self setStatus:@"xmark.circle.fill" order:6 text:NSLocalizedString(@"Reverted to original",@"tooltip")];
     return YES;
 }
 
@@ -447,7 +447,7 @@
 
 -(void)setNooptStatus {
     [self setFileOptimized:nil]; // Needed to update 0% optimized display
-    [self setStatus:@"noopt" order:5 text:NSLocalizedString(@"File cannot be optimized any further",@"tooltip")];
+    [self setStatus:@"xmark.circle.fill" order:5 text:NSLocalizedString(@"File cannot be optimized any further",@"tooltip")];
     self.isDone = YES;
     [self stopAllWorkers];
 }
@@ -459,7 +459,7 @@
         self.isDone = YES;
         [self stopAllWorkers];
         if (saved) {
-            [self setStatus:@"ok" order:7 text:[NSString stringWithFormat:NSLocalizedString(@"Optimized successfully with %@",@"tooltip"),bestToolName]];
+            [self setStatus:@"checkmark.circle.fill" order:7 text:[NSString stringWithFormat:NSLocalizedString(@"Optimized successfully with %@",@"tooltip"),bestToolName]];
         } else {
             [self setError:NSLocalizedString(@"Optimized file could not be saved",@"tooltip")];
         }
@@ -513,7 +513,7 @@
 #pragma GCC diagnostic pop
 
 -(void)doEnqueueWorkersInCPUQueue:(nonnull NSOperationQueue *)queue serialQueue:(dispatch_queue_t)serialQueue defaults:(nonnull NSUserDefaults*)defs {
-    [self setStatus:@"progress" order:3 text:NSLocalizedString(@"Inspecting file",@"tooltip")];
+    [self setStatus:@"circle.dotted" order:3 text:NSLocalizedString(@"Inspecting file",@"tooltip")];
 
     NSError *err = nil;
     NSData *fileData = [NSData dataWithContentsOfURL:filePath options:NSDataReadingMappedIfSafe error:&err];
@@ -784,20 +784,20 @@
 
     if (running) {
         NSString *name = [[running className] stringByReplacingOccurrencesOfString:@"Worker" withString:@""];
-        [self setStatus:@"progress" order:4 text:[NSString stringWithFormat:NSLocalizedString(@"Started %@",@"command name, tooltip"), name]];
+        [self setStatus:@"circle.dotted" order:4 text:[NSString stringWithFormat:NSLocalizedString(@"Started %@",@"command name, tooltip"), name]];
     } else {
-        [self setStatus:@"wait" order:1 text:NSLocalizedString(@"Waiting to be optimized",@"tooltip")];
+        [self setStatus:@"circle.dotted" order:1 text:NSLocalizedString(@"Waiting to be optimized",@"tooltip")];
     }
 }
 
 -(void)setError:(nonnull NSString *)text {
     self.isFailed = YES;
-    [self setStatus:@"err" order:9 text:text];
+    [self setStatus:@"questionmark.circle.fill" order:9 text:text];
 }
 
 -(void)setStatus:(nonnull NSString *)imageName order:(NSInteger)order text:(nonnull NSString *)text {
     // Keep failed status visible instead of replacing with progress/noopt/etc
-    if (self.isFailed && ![imageName isEqualToString:@"ok"] && ![imageName isEqualToString:@"err"]) {
+    if (self.isFailed && ![imageName isEqualToString:@"checkmark.circle.fill"] && ![imageName isEqualToString:@"questionmark.circle.fill"]) {
         return;
     }
 

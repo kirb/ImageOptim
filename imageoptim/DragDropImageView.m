@@ -15,14 +15,6 @@
     [self registerForDraggedTypes:@[NSFilenamesPboardType]];
 }
 
-- (BOOL)allowsVibrancy {
-    return NSAppKitVersionNumber >= NSAppKitVersionNumber10_10;
-}
-
--(BOOL)isOpaque {
-    return NSAppKitVersionNumber < NSAppKitVersionNumber10_10;;
-}
-
 //Destination Operations
 - (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
     highlight = YES;
@@ -45,12 +37,12 @@
 }
 
 - (void)drawRect:(NSRect)rect {
-    if (NSAppKitVersionNumber < NSAppKitVersionNumber10_10) {
-        [[NSColor windowBackgroundColor] setFill];
-    } else {
-        [[NSColor clearColor] set];
-    }
-    NSRectFillUsingOperation(rect, NSCompositeSourceOver);
+//    if (NSAppKitVersionNumber < NSAppKitVersionNumber10_10) {
+//        [[NSColor windowBackgroundColor] setFill];
+//    } else {
+//        [[NSColor clearColor] set];
+//    }
+//    NSRectFillUsingOperation(rect, NSCompositeSourceOver);
 
     NSColor *gray = [NSColor colorWithDeviceWhite:0 alpha:highlight ? 1.0/4.0 : 1.0/8.0];
     [gray set];
@@ -74,16 +66,18 @@
     [p setLineDash:dash count:2 phase:2];
     [p stroke];
 
-    NSBezierPath *r = [NSBezierPath bezierPath];
-    CGFloat baseWidth=size/8.0, baseHeight = size/8.0, arrowWidth=baseWidth*2, pointHeight=baseHeight*3.0, offset=-size/8.0;
-    [r moveToPoint:NSMakePoint(bounds.size.width/2.0 - baseWidth, bounds.size.height/2.0 + baseHeight - offset)];
-    [r lineToPoint:NSMakePoint(bounds.size.width/2.0 + baseWidth, bounds.size.height/2.0 + baseHeight - offset)];
-    [r lineToPoint:NSMakePoint(bounds.size.width/2.0 + baseWidth, bounds.size.height/2.0 - baseHeight - offset)];
-    [r lineToPoint:NSMakePoint(bounds.size.width/2.0 + arrowWidth, bounds.size.height/2.0 - baseHeight - offset)];
-    [r lineToPoint:NSMakePoint(bounds.size.width/2.0, bounds.size.height/2.0 - pointHeight - offset)];
-    [r lineToPoint:NSMakePoint(bounds.size.width/2.0 - arrowWidth, bounds.size.height/2.0 - baseHeight - offset)];
-    [r lineToPoint:NSMakePoint(bounds.size.width/2.0 - baseWidth, bounds.size.height/2.0 - baseHeight - offset)];
-    [r fill];
+	NSImage *arrowImage = [NSImage imageWithSystemSymbolName:@"arrow.down" accessibilityDescription:nil];
+	CGFloat arrowSize = size / 1.75;
+	arrowImage.size = CGSizeMake(arrowSize, arrowSize);
+	[arrowImage lockFocus];
+	CGRect arrowRect = CGRectMake((bounds.size.width - arrowSize) / 2.0,
+																(bounds.size.height - arrowSize) / 2.0,
+																arrowSize,
+																arrowSize);
+	[gray set];
+	NSRectFillUsingOperation((CGRect){CGPointZero, arrowImage.size}, NSCompositingOperationDestinationIn);
+	[arrowImage unlockFocus];
+	[arrowImage drawInRect:arrowRect];
 }
 
 - (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
