@@ -104,7 +104,6 @@
 		5AC64EC21AF3FCFE0032AA7F /* unoptimized.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AC64EC11AF3FCFE0032AA7F /* unoptimized.png */; };
 		5AC64F071AF3FDEE0032AA7F /* ExtensionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AC64F061AF3FDEE0032AA7F /* ExtensionController.m */; };
 		5AC64F091AF3FDEE0032AA7F /* ExtensionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC64F081AF3FDEE0032AA7F /* ExtensionController.xib */; };
-		5AC64F0C1AF3FDEE0032AA7F /* ImageOptimize.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5AC64EFE1AF3FDEE0032AA7F /* ImageOptimize.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5AD033531E26B6840030291A /* File.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD033511E26B6840030291A /* File.h */; };
 		5AD033541E26B6840030291A /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD033521E26B6840030291A /* File.m */; };
 		5AD0347C1E27185D0030291A /* TempFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0347A1E27185D0030291A /* TempFile.h */; };
@@ -492,17 +491,6 @@
 				5A5811AA1AD73A7E0001838D /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5AC64F231AF3FDEF0032AA7F /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				5AC64F0C1AF3FDEE0032AA7F /* ImageOptimize.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -986,18 +974,18 @@
 		5A5811941AD73A630001838D /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				5A5811AF1BD73A640001838D /* Sparkle.framework */,
+				5A5811A81AD73A640001838D /* Sparkle Test App.app */,
+				5A5811A91AD73A640001838D /* Sparkle Unit Tests.xctest */,
 				5A5811A51AD73A640001838D /* BinaryDelta */,
+				5A5811A71AD73A640001838D /* Autoupdate.app */,
+				5ADDF2FF1CE613A800B4AD58 /* UI Tests.xctest */,
 				D047E4601E7C3CE80036F96B /* fileop */,
 				D047E4621E7C3CE80036F96B /* generate_appcast */,
 				5FFC96B8275842290035D0A2 /* generate_keys */,
 				5FFC96BA275842290035D0A2 /* sign_update */,
-				5A5811A71AD73A640001838D /* Autoupdate.app */,
 				5FFC96BC275842290035D0A2 /* libbsdiff.a */,
 				5FFC96BE275842290035D0A2 /* libed25519.a */,
-				5A5811A81AD73A640001838D /* Sparkle Test App.app */,
-				5A5811A91AD73A640001838D /* Sparkle Unit Tests.xctest */,
-				5A5811AF1BD73A640001838D /* Sparkle.framework */,
-				5ADDF2FF1CE613A800B4AD58 /* UI Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1297,12 +1285,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "ImageOptim" */;
 			buildPhases = (
-				5AB422EF1CE730CD00E9B0D7 /* Xcode code signing sucks */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				5A7D24E113E5BC0C00815AAA /* Resources */,
 				5AC63C410E9ABCFD0053B879 /* Copy Frameworks */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				5AC64F231AF3FDEF0032AA7F /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -1328,7 +1314,6 @@
 				TargetAttributes = {
 					5AC64EFD1AF3FDEE0032AA7F = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 59KZTZA4XR;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 1;
@@ -1336,6 +1321,7 @@
 						};
 					};
 					8D1107260486CEB800E47090 = {
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 1;
@@ -1704,21 +1690,6 @@
 			shellPath = /bin/sh;
 			shellScript = "cd \"$BUILT_PRODUCTS_DIR/\"\nrm -rf verify\nmkdir verify\ntar xjf \"$TARGET_BUILD_DIR/ImageOptim.tar.bz2\" -C verify\ncodesign --strict --deep -v -v \"verify/ImageOptim.app\" || exit 13\ncodesign -v -v \"verify/ImageOptim.app/Contents/Frameworks/Sparkle.framework/Versions/A/Resources/\"*\"Autoupdate.app\" || exit 12\ncodesign -v -v \"verify/ImageOptim.app/Contents/Frameworks/Sparkle.framework\" || exit 11\n";
 			showEnvVarsInLog = 0;
-		};
-		5AB422EF1CE730CD00E9B0D7 /* Xcode code signing sucks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"",
-			);
-			name = "Xcode code signing sucks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "rm -rf \"$TARGET_BUILD_DIR/ImageOptim.app\"\n";
 		};
 		5ABB9FEB0E8518DA006F51BB /* Tar */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2365,7 +2336,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = ImageOptimize/ImageOptimize.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 59KZTZA4XR;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2445,7 +2416,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = ImageOptim.entitlements;
-				DEVELOPMENT_TEAM = 59KZTZA4XR;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)",
@@ -2459,6 +2434,7 @@
 				MARKETING_VERSION = 1.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.pornel.ImageOptim;
 				PRODUCT_NAME = ImageOptim;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -2468,7 +2444,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = ImageOptim.entitlements;
-				DEVELOPMENT_TEAM = 59KZTZA4XR;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)",
@@ -2478,6 +2458,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.pornel.ImageOptim;
 				PRODUCT_NAME = ImageOptim;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
@@ -2490,8 +2471,8 @@
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUGX;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = YES;
 				STRINGS_FILE_OUTPUT_ENCODING = binary;
 			};
@@ -2504,6 +2485,7 @@
 				APPLY_RULES_IN_COPY_FILES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_DYNAMIC_NO_PIC = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				STRINGS_FILE_OUTPUT_ENCODING = binary;
 			};
 			name = Release;
