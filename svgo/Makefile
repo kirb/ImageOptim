@@ -4,7 +4,7 @@ all: ./build/svgo.js
 	./node_modules/.bin/webpack
 
 ./node_modules/.bin/webpack: package.json
-	npm install && touch -c ./node_modules/.bin/webpack
+	pnpm install && touch -c ./node_modules/.bin/webpack
 
 clean:
 	-rm -rf build node_modules
